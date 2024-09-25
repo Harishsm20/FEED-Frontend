@@ -2,7 +2,7 @@ import { signup1, signup2, signup3, signup4, apple, facebook, github, microsoft 
 
 const Signup = () => {
   return (
-    <div className='flex justify-center items-center min-h-screen bg-gradient-to-r from-[#333300] to-[#333300]'>
+    <div className='flex justify-center items-center min-h-screen bg-gradient-to-r from-[#333300] to-[#333300] pt-4 pb-4'>
       <div className='flex bg-gradient-to-b from-[#534825] to-[#4f4e4a] rounded-3xl shadow-lg max-w-5xl w-full px-8 py-4'>
       <div className='flex-1 flex flex-col justify-center p-8'>
           <div className='text-left mb-6'>
