@@ -7,3 +7,4 @@ export {default as CustomSlider} from './general/CustomSlider'
 
 // Profile Componenets
 export {default as Bio} from './ProfileComponents/Bio'
+export {default as Follow}  from './ProfileComponents/Follow'

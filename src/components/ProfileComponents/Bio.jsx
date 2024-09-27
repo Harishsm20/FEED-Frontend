@@ -21,21 +21,6 @@ const Bio = ({bioContent, profileImg}) => {
         </div>
       </div>
 
-      {/* Follower/Following Section */}
-      <div className='mt-6 grid grid-cols-3 gap-4 text-center text-white'>
-        <div>
-          <h3 className='text-xl font-semibold'>0</h3>
-          <p>Posts</p>
-        </div>
-        <div>
-          <h3 className='text-xl font-semibold'>0</h3>
-          <p>Followers</p>
-        </div>
-        <div>
-          <h3 className='text-xl font-semibold'>0</h3>
-          <p>Following</p>
-        </div>
-      </div>
     </div>
   );
 }
