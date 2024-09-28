@@ -3,7 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from "react-rout
 
 // Import Pages
 import { HomeLayout } from "../layouts";
-import { HomePage, Login, Profile, Signup } from "../pages";
+import { CreatePost, HomePage, Login, Profile, Signup } from "../pages";
 
 const Router = createBrowserRouter(
     createRoutesFromElements(
@@ -14,6 +14,8 @@ const Router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/create-post" element={<CreatePost />} />
+
       </Route>
       </>
     )

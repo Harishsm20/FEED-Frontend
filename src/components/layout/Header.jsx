@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const navigate = useNavigate();
   async function goToBlog() {
-    navigate('/createPost')
+    navigate('/create-post')
   }
 
   async function goTOProfile(){
