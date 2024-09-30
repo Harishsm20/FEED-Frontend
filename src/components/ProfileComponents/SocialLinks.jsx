@@ -16,7 +16,7 @@ const SocialLinks = ({ snapchat, linkedin, twitter, instagram }) => {
               className="flex items-center bg-white p-3 rounded-lg shadow hover:bg-gray-100"
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/en/a/ad/Snapchat_logo.svg"
+                src="https://img.icons8.com/?size=100&id=KrtKMa6Fduil&format=png&color=000000"
                 alt="Snapchat"
                 className="w-8 h-8 mr-3"
               />
@@ -50,7 +50,7 @@ const SocialLinks = ({ snapchat, linkedin, twitter, instagram }) => {
               className="flex items-center bg-white p-3 rounded-lg shadow hover:bg-gray-100"
             >
               <img
-                src="https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg"
+                src="https://cdn.iconscout.com/icon/free/png-512/free-twitter-logo-icon-download-in-svg-png-gif-file-formats--x-new-sign-logos-pack-icons-7651211.png?f=webp&w=256"
                 alt="Twitter"
                 className="w-8 h-8 mr-3"
               />
