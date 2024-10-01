@@ -1,7 +1,7 @@
 
 const Bio = ({bioContent, profileImg}) => {
   return (
-    <div className='mt-2 flex flex-col bg-gradient-to-b from-[#4a4737] to-[#b5ab58] p-8 rounded-lg'>
+    <div className='mt-2 flex flex-col bg-gradient-to-b from-[#4a4737] to-[#b5ab58] p-8 rounded-t-lg'>
 
       {/* Bio content with header */}
       <div className='flex flex-row justify-between items-center'>
