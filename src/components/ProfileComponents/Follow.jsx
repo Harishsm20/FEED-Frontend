@@ -4,7 +4,7 @@ const Follow = ({postCount,followers, following}) => {
   return (
     <>
     {/*Followers and Following contents */}
-    <div className='grid grid-cols-3 justify-items-center text-center mt-6 mb-5'>
+    <div className='grid grid-cols-3 justify-items-center text-center p-2 mb-5 border-4 border-[#f0e6df]'>
         <div className=''>
         <div>
             {postCount}
