@@ -60,19 +60,19 @@ const Footer = () => {
         </div>
 
         <div className="text-center">
-          <span className="font-bold text-whiteDim mb-2 block">About Travel</span>
+          <span className="font-bold text-whiteDim mb-2 block">About Feed</span>
           <p className="text-whiteDim/80 text-sm">
-            "Smart travel made easy. Personalized, sustainable, and unforgettable experiences await."
+          Feed, your go-to platform for inspiration, connection, and creativity! 
           </p>
         </div>
 
         <div className="text-center">
           <span className="font-bold text-whiteDim mb-2 block">Contact Us</span>
           <a href="#" className="text-whiteDim/80 text-sm font-medium mb-1 block">
-            onetripqueries@gmail.com
+            Feed@gmail.com
           </a>
           <a href="#" className="text-whiteDim/80 text-sm font-medium mb-1 block">
-            9876543216
+            99999999
           </a>
         </div>
       </div>
