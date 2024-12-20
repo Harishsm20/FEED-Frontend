@@ -10,12 +10,12 @@ import { BsTwitter, BsInstagram } from 'react-icons/bs';
 
 const Footer = () => {
   return (
-    <div className="bg-bgColor py-8">
+    <div className="bg-bgColor py-4">
       <div className="container mx-auto grid gap-6 text-center md:grid-cols-2 lg:grid-cols-4">
         <div className="pb-2">
           <div className="flex justify-center items-center">
             <a href="#" className="flex text-2xl items-center text-whiteDim font-bold cursor-pointer">
-              <h1>One Trip</h1>
+              <h1>Feed</h1>
             </a>
           </div>
           <div className="flex justify-center gap-2 mt-4">
