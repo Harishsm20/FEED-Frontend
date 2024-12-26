@@ -14,6 +14,7 @@ import apple from './Images/IconSvg/apple.png'
 import facebook from './Images/IconSvg/facebook.png'
 import github from './Images/IconSvg/github.png'
 import microsoft from './Images/IconSvg/microsoft.png'
+import googleIcon from './Images/IconSvg/google.png'
 
 export {
     // Login import
@@ -23,5 +24,5 @@ export {
     signup1,signup2,signup3,signup4,
 
     // Svg icons
-    apple,facebook,github,microsoft,
+    apple,facebook,github,microsoft,googleIcon
 }
