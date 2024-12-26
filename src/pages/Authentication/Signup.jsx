@@ -1,7 +1,7 @@
 // Signup.js
 import { useState } from 'react';
 import axios from 'axios';
-import {signup1, signup2, signup3, signup4, apple, facebook, github, microsoft, googleIcon} from '../../assets';
+import {signup1, signup2, signup3, signup4, facebook, github, microsoft, googleIcon} from '../../assets';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -13,26 +13,65 @@ const Signup = () => {
     termsAccepted: false,
   });
 
+  const [errors, setErrors] = useState({});
+  const [passwordStrength, setPasswordStrength] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [id]: type === 'checkbox' ? checked : value,
     }));
+    if (id === 'password') {
+      checkPasswordStrength(value);
+    }
+  };
+
+  const checkPasswordStrength = (password) => {
+    const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (strongRegex.test(password)) {
+      setPasswordStrength('Strong');
+    } else if (password.length >= 6) {
+      setPasswordStrength('Medium');
+    }
+    else if (password.length == 0) {
+      setPasswordStrength('');
+    }
+     else {
+      setPasswordStrength('Weak');
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.firstName) newErrors.firstName = 'First name is required';
+    if (!formData.lastName) newErrors.lastName = 'Last name is required';
+    if (!formData.email) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email format';
+    if (!formData.password) newErrors.password = 'Password is required';
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords not matched';
+    }
+    if (!formData.termsAccepted) newErrors.termsAccepted = 'You must accept the terms and conditions';
+
+    setErrors(newErrors);
+    setTimeout(() => setErrors({}), 2500);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
+    if (!validateForm()) return;
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/register', formData);
-      console.log("Signup Successful", response.data);
+      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2500);
+      console.log('Signup Successful', response.data);
     } catch (error) {
-      console.error("Signup Error", error);
+      setErrors({ form: error.response?.data?.message || 'Signup failed. Please try again.' });
+      setTimeout(() => setErrors({}), 2500);
     }
   };
 
@@ -49,6 +88,8 @@ const Signup = () => {
             <h2 className='text-4xl font-semibold text-[#e0e0e0]'>Sign Up</h2>
             <h3 className='text-lg text-[#cccccc]'>to your account</h3>
           </div>
+          {errors.form && <p className="text-red-500 text-sm mb-4">{errors.form}</p>}
+          {showSuccess && <p className="text-green-500 text-sm mb-4">Signup successful! Check your email to verify your account.</p>}
           <div className='mb-4 flex justify-between'>
             <div className='flex-1 mr-2'>
               <label className='block text-[#cccccc] pl-1' htmlFor='firstName'>First Name:</label>
@@ -60,6 +101,7 @@ const Signup = () => {
                 className='glassmorphism-input mt-1 w-half p-2 border rounded-xl text-[#e0e0e0] placeholder-[#cccccc] focus:outline-none focus:ring-2 focus:ring-[#e0e0e0]'
                 placeholder='Enter Your First Name'
               />
+              {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
             </div>
             <div className='flex-1 ml-2'>
               <label className='block text-[#cccccc] pl-1' htmlFor='lastName'>Last Name:</label>
@@ -71,6 +113,7 @@ const Signup = () => {
                 className='glassmorphism-input mt-1 w-half p-2 border rounded-xl text-[#e0e0e0] placeholder-[#cccccc] focus:outline-none focus:ring-2 focus:ring-[#e0e0e0]'
                 placeholder='Enter Your Last Name'
               />
+              {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
             </div>
           </div>
           <div className='mb-4'>
@@ -83,6 +126,7 @@ const Signup = () => {
               className='glassmorphism-input mt-1 w-full p-2 border rounded-2xl text-[#e0e0e0] placeholder-[#cccccc] focus:outline-none focus:ring-2 focus:ring-[#e0e0e0]'
               placeholder='Enter Your Email'
             />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
           <div className='mb-4'>
             <label className='block text-[#cccccc] pl-1' htmlFor='password'>Password:</label>
@@ -94,6 +138,10 @@ const Signup = () => {
               className='glassmorphism-input mt-1 w-full p-2 border rounded-2xl text-[#e0e0e0] placeholder-[#cccccc] focus:outline-none focus:ring-2 focus:ring-[#e0e0e0]'
               placeholder='Enter Your Password'
             />
+            <p className={`text-sm ${passwordStrength === 'Strong' ? 'text-green-500' : passwordStrength === 'Medium' ? 'text-yellow-500' : 'text-red-500'}`}>
+              {passwordStrength}
+            </p>
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
           </div>
           <div className='mb-4'>
             <label className='block text-[#cccccc] pl-1' htmlFor='confirmPassword'>Confirm Password:</label>
@@ -105,6 +153,7 @@ const Signup = () => {
               className='glassmorphism-input mt-1 w-full p-2 border rounded-2xl text-[#e0e0e0] placeholder-[#cccccc] focus:outline-none focus:ring-2 focus:ring-[#e0e0e0]'
               placeholder='Confirm Password'
             />
+            {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
           </div>
           <div className='mb-4 flex items-center'>
             <input
@@ -117,13 +166,14 @@ const Signup = () => {
             <label htmlFor='termsAccepted' className='text-[#cccccc]'>
               I agree to all terms & conditions
             </label>
+            {errors.termsAccepted && <p className="text-red-500 text-sm">{errors.termsAccepted}</p>}
           </div>
           <button type='submit' className='w-full py-2 bg-[#b8a500] text-white rounded-2xl hover:bg-[#e0e0e0] hover:text-[#b8a500] transition duration-500'>
             Sign Up
           </button>
           <p className='mt-4 text-center text-[#cccccc]'>or continue with</p>
           <div className='flex justify-center space-x-4 mt-4'>
-            <img src={googleIcon} alt='Apple' 
+            <img src={googleIcon} alt='Apple'
             onClick={handleGoogleAuth}
             className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
             <img src={microsoft} alt='Microsoft' className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
