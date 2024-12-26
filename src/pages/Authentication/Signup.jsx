@@ -29,7 +29,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/signup', formData);
+      const response = await axios.post('http://localhost:3001/api/auth/register', formData);
       console.log("Signup Successful", response.data);
     } catch (error) {
       console.error("Signup Error", error);

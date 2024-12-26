@@ -62,7 +62,7 @@ const Footer = () => {
         <div className="text-center">
           <span className="font-bold text-whiteDim mb-2 block">About Feed</span>
           <p className="text-whiteDim/80 text-sm">
-          Feed, your go-to platform for inspiration, connection, and creativity! 
+          Feed, your go-to platform for inspiration, connection, and creativity!
           </p>
         </div>
 

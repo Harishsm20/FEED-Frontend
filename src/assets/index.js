@@ -16,7 +16,7 @@ import github from './Images/IconSvg/github.png'
 import microsoft from './Images/IconSvg/microsoft.png'
 
 export {
-    // Login import 
+    // Login import
     login1, login2, login3,
 
     // Signup import

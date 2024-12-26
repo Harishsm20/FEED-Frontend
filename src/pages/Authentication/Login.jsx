@@ -11,7 +11,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null); 
+    setError(null);
 
     try {
       const response = await axios.post('http://localhost:3001/api/auth/login', { email, password });
