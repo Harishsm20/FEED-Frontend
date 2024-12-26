@@ -1,7 +1,7 @@
 // Signup.js
 import { useState } from 'react';
 import axios from 'axios';
-import {signup1, signup2, signup3, signup4, apple, facebook, github, microsoft} from '../../assets';
+import {signup1, signup2, signup3, signup4, apple, facebook, github, microsoft, googleIcon} from '../../assets';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -34,6 +34,11 @@ const Signup = () => {
     } catch (error) {
       console.error("Signup Error", error);
     }
+  };
+
+  const handleGoogleAuth = () => {
+    // Redirect to the backend Google auth endpoint
+    window.location.href = 'http://localhost:5000/api/auth/google';
   };
 
   return (
@@ -118,7 +123,9 @@ const Signup = () => {
           </button>
           <p className='mt-4 text-center text-[#cccccc]'>or continue with</p>
           <div className='flex justify-center space-x-4 mt-4'>
-            <img src={apple} alt='Apple' className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
+            <img src={googleIcon} alt='Apple' 
+            onClick={handleGoogleAuth}
+            className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
             <img src={microsoft} alt='Microsoft' className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
             <img src={facebook} alt='Facebook' className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
             <img src={github} alt='GitHub' className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
