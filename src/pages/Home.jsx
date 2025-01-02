@@ -1,36 +1,34 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import axios from 'axios';
 import { CustomSlider } from '../components';
 
 const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the token is available in localStorage
-    const token = Cookies.get('jwt');
-    console.log(token);
-    
-    // if (token) {
-    //   // Save the token in a cookie
-    //   Cookies.set('jwt', token, {
-    //     expires: 1, // 1 day
-    //     secure: process.env.NODE_ENV === 'production', // Only secure in production
-    //     sameSite: 'Strict',
-    //   });
+    // Verify the user's authentication status by calling the server
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/auth/verify-token', {
+          withCredentials: true, // Include cookies with the request
+        });
 
-    //   console.log('Token saved in cookies');
-    // }
-    if(!token) {
-      navigate('/login');
-    }
+        if (response.status === 200) {
+          console.log('User authenticated');
+        }
+      } catch (error) {
+        console.error('Error verifying token:', error);
+        if (error.response && error.response.status === 401) {
+          navigate('/login'); // Redirect to login if unauthorized
+        }
+      }
+    };
+
+    verifyToken();
   }, [navigate]);
 
-  return (
-    <>
-      <CustomSlider />
-    </>
-  );
+  return <CustomSlider />;
 };
 
 export default Home;
