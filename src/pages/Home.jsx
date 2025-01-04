@@ -1,34 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { verifyToken } from '../service/authService';
 import { CustomSlider } from '../components';
 
 const Home = () => {
   const navigate = useNavigate();
+  const [isVerified, setIsVerified] = useState(() => sessionStorage.getItem('isVerified') === 'true');
 
   useEffect(() => {
-    // Verify the user's authentication status by calling the server
-    const verifyToken = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/auth/verify-token', {
-          withCredentials: true, // Include cookies with the request
-        });
+    const verifyUserToken = async () => {
+      if (isVerified) return;
 
-        if (response.status === 200) {
-          console.log('User authenticated');
-        }
+      try {
+        await verifyToken();
+        setIsVerified(true);
+        sessionStorage.setItem('isVerified', 'true');
       } catch (error) {
-        console.error('Error verifying token:', error);
-        if (error.response && error.response.status === 401) {
-          navigate('/login'); // Redirect to login if unauthorized
-        }
+        console.error('Token verification failed:', error);
+        navigate('/login');
       }
     };
 
-    verifyToken();
-  }, [navigate]);
+    verifyUserToken();
+  }, [isVerified, navigate]);
 
-  return <CustomSlider />;
+  return <div>{isVerified ? <CustomSlider /> : <p>Loading...</p>}</div>;
 };
 
 export default Home;

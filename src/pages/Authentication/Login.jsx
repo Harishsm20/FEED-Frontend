@@ -1,6 +1,8 @@
   import { useState } from 'react';
   import axios from 'axios';
   import { useNavigate } from 'react-router-dom';
+  import { login, googleAuth } from '../../service/authService';
+
   import { login1, login2, login3, googleIcon, microsoft, github, facebook } from '../../assets';
 
   const Login = () => {
@@ -11,24 +13,15 @@
 
     const handleLogin = async (e) => {
       e.preventDefault();
-      setError(null); 
-
       try {
-        const response = await axios.post('http://localhost:3001/api/auth/login', { email, password });
-
-        localStorage.setItem('token', response.data.accessToken);
-        console.log(response.data.accessToken)
-
+        await login(email, password);
+        sessionStorage.setItem('isVerified', 'true');
         navigate('/dashboard');
       } catch (err) {
-        setError(err.response ? err.response.data.message : 'An error occurred. Please try again.');
+        setError(err.message || 'Login failed');
       }
     };
-
-    const handleGoogleAuth = () => {
-      // Redirect to the backend Google auth endpoint
-      window.location.href = 'http://localhost:5000/api/auth/google';
-    };
+  
 
     return (
       <div className='flex justify-center items-center min-h-screen bg-gradient-to-r from-[#333300] to-[#333300]'>
@@ -99,7 +92,7 @@
                 <div className='flex justify-center space-x-4 mt-4'>
                   {/* Social Login Buttons */}
                   <img src={googleIcon} alt='Google' 
-                  onClick={handleGoogleAuth}
+                  onClick={googleAuth}
                   className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
                   <img src={microsoft} alt='Microsoft' className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />
                   <img src={facebook} alt='Facebook' className='w-8 h-8 grayscale hover:grayscale-0 hover:-translate-y-2 transition-all duration-500' />

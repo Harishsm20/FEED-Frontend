@@ -1,6 +1,6 @@
 // Signup.js
 import { useState } from 'react';
-import axios from 'axios';
+import { signup } from '../../service/authService';
 import {signup1, signup2, signup3, signup4, apple, facebook, github, microsoft, googleIcon} from '../../assets';
 
 const Signup = () => {
@@ -29,10 +29,10 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/signup', formData);
-      console.log("Signup Successful", response.data);
+      await signup(formData);
+      alert("Signup successful! You can now log in.");
     } catch (error) {
-      console.error("Signup Error", error);
+      console.error("Signup failed:", error);
     }
   };
 
