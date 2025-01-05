@@ -1,5 +1,6 @@
 // src/service/authService.js
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const API_URL = 'http://localhost:5000/api/auth';
 
@@ -31,6 +32,7 @@ export const googleAuth = () => {
 // Verify Token Function
 export const verifyToken = async () => {
   try {
+    console.log("verify token")
     const response = await axios.get(`${API_URL}/verify-token`, { withCredentials: true });
     return response.data;
   } catch (error) {
@@ -42,8 +44,15 @@ export const verifyToken = async () => {
 export const logout = async () => {
   try {
     const response = await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+    Cookies.remove('jwt');
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
+};
+
+// Handing Token
+export const getToken = () => {
+  console.log(Cookies.get('jwt'))
+  return Cookies.get('jwt');
 };
