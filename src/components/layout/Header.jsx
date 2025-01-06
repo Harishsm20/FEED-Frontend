@@ -4,6 +4,7 @@ import { BiBookAdd } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
 import { useNavigate, Link } from "react-router-dom";
 import { logout, getToken } from "../../service/authService.js";
+import { CiLogout } from "react-icons/ci";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -11,7 +12,8 @@ const Header = () => {
 
   useEffect(() => {
     const token = getToken(); // Get token from cookies
-    setIsLoggedIn(!!token);
+    const tokenPresent = (token) ? true : false; 
+    setIsLoggedIn(tokenPresent);
   }, []);
 
   const handleLogout = async () => {
@@ -52,9 +54,9 @@ const Header = () => {
         {isLoggedIn ? (
           <button
             onClick={handleLogout}
-            className="flex items-center w-20 justify-center py-2 bg-red-500 text-white rounded-2xl hover:bg-red-600 transition duration-500"
+            className="flex items-center  justify-center py-2  hover:text-red-500 transition duration-500"
           >
-            Logout
+            <CiLogout />
           </button>
         ) : (
           <Link

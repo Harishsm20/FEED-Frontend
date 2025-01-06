@@ -53,6 +53,6 @@ export const logout = async () => {
 
 // Handing Token
 export const getToken = () => {
-  console.log(Cookies.get('jwt'))
-  return Cookies.get('jwt');
+  const token = Cookies.get('jwt');
+  return token;
 };

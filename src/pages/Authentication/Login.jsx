@@ -1,5 +1,4 @@
   import { useState } from 'react';
-  import axios from 'axios';
   import { useNavigate } from 'react-router-dom';
   import { login, googleAuth } from '../../service/authService';
 
@@ -16,7 +15,7 @@
       try {
         await login(email, password);
         sessionStorage.setItem('isVerified', 'true');
-        navigate('/dashboard');
+        setTimeout(navigate('/dashboard'), 10000) ;
       } catch (err) {
         setError(err.message || 'Login failed');
       }
