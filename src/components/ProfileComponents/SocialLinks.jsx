@@ -4,7 +4,7 @@ const SocialLinks = ({ snapchat, linkedin, twitter, instagram }) => {
       {/* Snapchat */}
       {snapchat && (
         <a
-          href={`https://www.snapchat.com/add/${snapchat}`}
+          href={`${snapchat}`}
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center"
@@ -32,7 +32,7 @@ const SocialLinks = ({ snapchat, linkedin, twitter, instagram }) => {
       {/* LinkedIn */}
       {linkedin && (
         <a
-          href={`https://www.linkedin.com/in/${linkedin}`}
+          href={`${linkedin}`}
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center"
@@ -60,7 +60,7 @@ const SocialLinks = ({ snapchat, linkedin, twitter, instagram }) => {
       {/* Twitter */}
       {twitter && (
         <a
-          href={`https://www.twitter.com/${twitter}`}
+          href={`${twitter}`}
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center"
@@ -88,7 +88,7 @@ const SocialLinks = ({ snapchat, linkedin, twitter, instagram }) => {
       {/* Instagram */}
       {instagram && (
         <a
-          href={`https://www.instagram.com/${instagram}`}
+          href={`${instagram}`}
           target="_blank"
           rel="noopener noreferrer"
           className="relative flex items-center"
