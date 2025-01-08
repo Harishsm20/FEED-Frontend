@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Row, Col, message } from "antd";
-import axios from "axios";
+import { checkUsernameAvailability, updateProfile } from "../../services/profileService";
 
 const { TextArea } = Input;
 
-const Edit = ({ formData, handleInputChange, handleSave }) => {
+const Edit = ({ initialFormData, onSave }) => {
   const [form] = Form.useForm();
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState(null);
 
-  const onFinish = (values) => {
-    handleSave(values);
-  };
-
-  const checkUsernameAvailability = async () => {
+  const handleCheckUsername = async () => {
     const username = form.getFieldValue("userName");
     if (!username) {
       message.error("Please enter a username to check.");
@@ -22,10 +18,8 @@ const Edit = ({ formData, handleInputChange, handleSave }) => {
 
     try {
       setIsChecking(true);
-      const response = await axios.get(
-        `http://localhost:5000/api/profile/check-username`,{username : username}
-      );
-      if (response.data.isAvailable) {
+      const data = await checkUsernameAvailability(username);
+      if (data.isAvailable) {
         message.success("Username is available!");
         setIsAvailable(true);
       } else {
@@ -33,10 +27,29 @@ const Edit = ({ formData, handleInputChange, handleSave }) => {
         setIsAvailable(false);
       }
     } catch (error) {
-      console.error("Error checking username availability:", error);
       message.error("Failed to check username availability. Try again later.");
     } finally {
       setIsChecking(false);
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    try {
+      const profileData = {
+        bio: values.bio,
+        socialLinks: {
+          snapchat: values.snapchat,
+          linkedin: values.linkedin,
+          twitter: values.twitter,
+          instagram: values.instagram,
+        },
+        userName: values.userName,
+      };
+      const updatedProfile = await updateProfile(profileData);
+      onSave(updatedProfile.profile);
+      message.success("Profile updated successfully!");
+    } catch (error) {
+      message.error("Failed to update profile. Try again later.");
     }
   };
 
@@ -45,9 +58,8 @@ const Edit = ({ formData, handleInputChange, handleSave }) => {
       <Form
         form={form}
         layout="vertical"
-        initialValues={formData}
-        onValuesChange={(_, allValues) => handleInputChange(allValues)}
-        onFinish={onFinish}
+        initialValues={initialFormData}
+        onFinish={handleSubmit}
         style={{
           background: "#fff",
           padding: "16px",
@@ -59,29 +71,19 @@ const Edit = ({ formData, handleInputChange, handleSave }) => {
             <Form.Item
               label="User Name"
               name="userName"
-              rules={[
-                { required: true, message: "Please input your user name!" },
-              ]}
+              rules={[{ required: true, message: "Please input your username!" }]}
             >
               <Input
-                placeholder="Enter user name"
+                placeholder="Enter username"
                 suffix={
-                  <Button
-                    type="link"
-                    onClick={checkUsernameAvailability}
-                    loading={isChecking}
-                  >
+                  <Button type="link" onClick={handleCheckUsername} loading={isChecking}>
                     Check Availability
                   </Button>
                 }
               />
             </Form.Item>
-            {isAvailable === true && (
-              <p style={{ color: "green" }}>Username is available!</p>
-            )}
-            {isAvailable === false && (
-              <p style={{ color: "red" }}>Username is already taken.</p>
-            )}
+            {isAvailable === true && <p style={{ color: "green" }}>Username is available!</p>}
+            {isAvailable === false && <p style={{ color: "red" }}>Username is already taken.</p>}
           </Col>
 
           <Col span={24}>
@@ -119,11 +121,7 @@ const Edit = ({ formData, handleInputChange, handleSave }) => {
           </Col>
         </Row>
 
-        <Button
-          type="primary"
-          htmlType="submit"
-          style={{ marginTop: "20px" }}
-        >
+        <Button type="primary" htmlType="submit" style={{ marginTop: "20px" }}>
           Save
         </Button>
       </Form>
