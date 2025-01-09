@@ -32,7 +32,6 @@ export const googleAuth = () => {
 // Verify Token Function
 export const verifyToken = async () => {
   try {
-    console.log("verify token")
     const response = await axios.get(`${API_URL}/verify-token`, { withCredentials: true });
     return response.data;
   } catch (error) {

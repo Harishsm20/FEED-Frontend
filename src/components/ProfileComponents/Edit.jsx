@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Row, Col, message } from "antd";
-import { checkUsernameAvailability, updateProfile } from "../../services/profileService";
+import { checkUsernameAvailability, updateProfile } from "../../service/profileService";
 
 const { TextArea } = Input;
 
