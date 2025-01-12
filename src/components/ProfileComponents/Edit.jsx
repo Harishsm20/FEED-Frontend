@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Row, Col, message } from "antd";
+import { Form, Input, Button, Row, Col, message, Upload } from "antd";
 import { checkUsernameAvailability, updateProfile } from "../../service/profileService";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
@@ -8,6 +9,7 @@ const Edit = ({ initialFormData, onSave }) => {
   const [form] = Form.useForm();
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState(null);
+  const [previewImage, setPreviewImage] = useState(initialFormData.profileImg || null); // Set initial profile image
 
   const handleCheckUsername = async () => {
     const username = form.getFieldValue("userName");
@@ -33,6 +35,15 @@ const Edit = ({ initialFormData, onSave }) => {
     }
   };
 
+  const handleImageChange = (info) => {
+    const file = info.file.originFileObj;
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setPreviewImage(e.target.result); // Update preview with the selected image
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (values) => {
     try {
       const profileData = {
@@ -44,6 +55,7 @@ const Edit = ({ initialFormData, onSave }) => {
           instagram: values.instagram,
         },
         userName: values.userName,
+        profileImg: previewImage, // Include updated profile image
       };
       const updatedProfile = await updateProfile(profileData);
       onSave(updatedProfile.profile);
@@ -67,6 +79,32 @@ const Edit = ({ initialFormData, onSave }) => {
         }}
       >
         <Row gutter={[16, 16]}>
+          {/* Profile Image Section */}
+          <Col span={24} className="text-center">
+            <Upload
+              accept="image/*"
+              showUploadList={false}
+              beforeUpload={() => false} // Prevent automatic upload
+              onChange={handleImageChange}
+            >
+              <div className="relative">
+                <img
+                  src={previewImage || "https://via.placeholder.com/150"} // Display current or placeholder image
+                  alt="Profile Preview"
+                  className="rounded-full w-40 h-40 border-4 border-gray-300 object-cover"
+                />
+                <Button
+                  type="link"
+                  icon={<PlusOutlined />}
+                  className="absolute bottom-2 right-2 text-white bg-blue-500 p-2 rounded-full"
+                >
+                  Change
+                </Button>
+              </div>
+            </Upload>
+          </Col>
+
+          {/* Username */}
           <Col span={24}>
             <Form.Item
               label="User Name"
@@ -86,6 +124,7 @@ const Edit = ({ initialFormData, onSave }) => {
             {isAvailable === false && <p style={{ color: "red" }}>Username is already taken.</p>}
           </Col>
 
+          {/* Bio */}
           <Col span={24}>
             <Form.Item
               label="Bio"
@@ -96,6 +135,7 @@ const Edit = ({ initialFormData, onSave }) => {
             </Form.Item>
           </Col>
 
+          {/* Social Links */}
           <Col span={12}>
             <Form.Item label="Snapchat" name="snapchat">
               <Input placeholder="Enter Snapchat username" />
