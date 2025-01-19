@@ -5,11 +5,11 @@ import { PlusOutlined } from "@ant-design/icons";
 
 const { TextArea } = Input;
 
-const Edit = ({ initialFormData, onSave }) => {
+const Edit = ({ initialFormData, onSave, profileImg }) => {
   const [form] = Form.useForm();
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState(null);
-  const [previewImage, setPreviewImage] = useState(initialFormData.profileImg || null); // Set initial profile image
+  const [previewImage, setPreviewImage] = useState(profileImg || null);
 
   const handleCheckUsername = async () => {
     const username = form.getFieldValue("userName");
@@ -39,7 +39,9 @@ const Edit = ({ initialFormData, onSave }) => {
     const file = info.file.originFileObj;
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => setPreviewImage(e.target.result); // Update preview with the selected image
+      reader.onload = (e) => {
+        setPreviewImage(e.target.result); // Update preview with the selected image
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -87,19 +89,32 @@ const Edit = ({ initialFormData, onSave }) => {
               beforeUpload={() => false} // Prevent automatic upload
               onChange={handleImageChange}
             >
-              <div className="relative">
+              <div style={{ position: "relative", display: "inline-block" }}>
                 <img
                   src={previewImage || "https://via.placeholder.com/150"} // Display current or placeholder image
                   alt="Profile Preview"
-                  className="rounded-full w-40 h-40 border-4 border-gray-300 object-cover"
+                  style={{
+                    borderRadius: "50%",
+                    width: "160px",
+                    height: "160px",
+                    objectFit: "cover",
+                    border: "4px solid #d9d9d9",
+                  }}
                 />
                 <Button
                   type="link"
                   icon={<PlusOutlined />}
-                  className="absolute bottom-2 right-2 text-white bg-blue-500 p-2 rounded-full"
-                >
-                  Change
-                </Button>
+                  style={{
+                    position: "absolute",
+                    bottom: "8px",
+                    right: "8px",
+                    backgroundColor: "#1890ff",
+                    color: "#fff",
+                    borderRadius: "50%",
+                    padding: "8px",
+                    fontSize: "16px",
+                  }}
+                />
               </div>
             </Upload>
           </Col>

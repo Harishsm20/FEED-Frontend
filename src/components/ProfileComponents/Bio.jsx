@@ -14,6 +14,7 @@ const Bio = ({ bioContent, profileImg, initialFormData, onSave }) => {
     return (
       <Edit
         initialFormData={initialFormData}
+        profileImg = {profileImg}
         onSave={(updatedProfile) => {
           onSave(updatedProfile);
           setIsEditing(false);
