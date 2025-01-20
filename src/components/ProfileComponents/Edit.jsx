@@ -50,6 +50,7 @@ const Edit = ({ initialFormData, onSave, profileImg }) => {
     try {
       const profileData = {
         bio: values.bio,
+        header: values.header,
         socialLinks: {
           snapchat: values.snapchat,
           linkedin: values.linkedin,
@@ -138,6 +139,18 @@ const Edit = ({ initialFormData, onSave, profileImg }) => {
             {isAvailable === true && <p style={{ color: "green" }}>Username is available!</p>}
             {isAvailable === false && <p style={{ color: "red" }}>Username is already taken.</p>}
           </Col>
+
+          {/* Header */}
+          <Col span={24}>
+            <Form.Item
+            label="Header"
+            name="header"
+            rules={[{ required: true, message: "Please enter a header" }]}
+            >
+              <TextArea placeholder="Enter Header"  />
+            </Form.Item>
+          </Col>
+
 
           {/* Bio */}
           <Col span={24}>

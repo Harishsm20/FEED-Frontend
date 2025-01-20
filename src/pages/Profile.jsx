@@ -15,6 +15,7 @@ const Profile = () => {
         const data = await fetchProfile();
         setUserData(data.user);
         setProfileData(data.profile);
+        // console.log(data)
       } catch (err) {
         setError(err.message || "An error occurred");
       } finally {
@@ -36,10 +37,12 @@ const Profile = () => {
     <>
       <Bio
         profileImg={login1}
+        header = {profileData?.header || "Let's explore and create together!"}
         bioContent={profileData?.bio || "Welcome to my profile!"}
         initialFormData={{
           userName: profileData.userName || "",
           bio: profileData.bio || "",
+          header : profileData.header || "",
           snapchat: profileData.socialLinks?.snapchat || "",
           linkedin: profileData.socialLinks?.linkedin || "",
           twitter: profileData.socialLinks?.twitter || "",

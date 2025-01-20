@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import Edit from "./Edit";
 
-const Bio = ({ bioContent, profileImg, initialFormData, onSave }) => {
+const Bio = ({ bioContent, header, profileImg, initialFormData, onSave }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -30,8 +30,7 @@ const Bio = ({ bioContent, profileImg, initialFormData, onSave }) => {
         {/* Left Side: Description */}
         <div className="flex-1 space-y-4">
           <h1 className="text-4xl font-bold text-white">
-            Let's <span className="text-[#f9f1cb]">explore</span> and{" "}
-            <span className="text-[#f9f1cb]">create</span> together!
+            {header}
           </h1>
           <p className="text-white text-lg">{bioContent}</p>
         </div>
