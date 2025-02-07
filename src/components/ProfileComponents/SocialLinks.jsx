@@ -1,6 +1,6 @@
 const SocialLinks = ({ snapchat, linkedin, twitter, instagram }) => {
   return (
-    <div className="flex space-x-4 bg-[#b5ab58] pb-6 pl-5">
+    <div className="flex space-x-4 bg-[#b5ab58] pb-6 pl-5 rounded-b-lg">
       {/* Snapchat */}
       {snapchat && (
         <a
