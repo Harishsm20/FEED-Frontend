@@ -11,6 +11,21 @@ const Edit = ({ initialFormData, onSave, profileImg }) => {
   const [isAvailable, setIsAvailable] = useState(null);
   const [previewImage, setPreviewImage] = useState(profileImg || null);
 
+  const handleImageUpload = ({ file }) => {
+    const selectedFile = file.originFileObj || file; // Ensure we're using the correct file
+  
+    if (selectedFile instanceof Blob) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPreviewImage(e.target.result); // Update preview image
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      console.error("Invalid file type:", selectedFile);
+    }
+  };
+  
+  
   const handleCheckUsername = async () => {
     const username = form.getFieldValue("userName");
     if (!username) {
@@ -32,17 +47,6 @@ const Edit = ({ initialFormData, onSave, profileImg }) => {
       message.error("Failed to check username availability. Try again later.");
     } finally {
       setIsChecking(false);
-    }
-  };
-
-  const handleImageChange = (info) => {
-    const file = info.file.originFileObj;
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPreviewImage(e.target.result); // Update preview with the selected image
-      };
-      reader.readAsDataURL(file);
     }
   };
 
@@ -84,15 +88,14 @@ const Edit = ({ initialFormData, onSave, profileImg }) => {
         <Row gutter={[16, 16]}>
           {/* Profile Image Section */}
           <Col span={24} className="text-center">
-            <Upload
-              accept="image/*"
+          <Upload
               showUploadList={false}
               beforeUpload={() => false} // Prevent automatic upload
-              onChange={handleImageChange}
+              onChange={handleImageUpload}
             >
               <div style={{ position: "relative", display: "inline-block" }}>
                 <img
-                  src={previewImage || "https://via.placeholder.com/150"} // Display current or placeholder image
+                  src={previewImage || "https://via.placeholder.com/150"} 
                   alt="Profile Preview"
                   style={{
                     borderRadius: "50%",
@@ -112,7 +115,7 @@ const Edit = ({ initialFormData, onSave, profileImg }) => {
                     backgroundColor: "#1890ff",
                     color: "#fff",
                     borderRadius: "50%",
-                    padding: "8px",
+                    padding: "8px", 
                     fontSize: "16px",
                   }}
                 />
