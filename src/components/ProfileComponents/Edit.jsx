@@ -201,3 +201,102 @@ const Edit = ({ initialFormData, onSave, profileImg }) => {
 };
 
 export default Edit;
+
+
+
+/*import React, { useState } from "react";
+import { Form, Input, Button, Upload, message } from "antd";
+import { updateProfile } from "../../service/profileService";
+import { PlusOutlined } from "@ant-design/icons";
+import axios from "axios";
+
+const Edit = ({ initialFormData, onSave, profileImg }) => {
+  const [form] = Form.useForm();
+  const [previewImage, setPreviewImage] = useState(profileImg || null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleImageUpload = ({ file }) => {
+    const imageFile = file.originFileObj;
+    setSelectedFile(imageFile);
+
+    const reader = new FileReader();
+    reader.onload = (e) => setPreviewImage(e.target.result);
+    reader.readAsDataURL(imageFile);
+  };
+
+  const handleSubmit = async (values) => {
+    try {
+      const formData = new FormData();
+      formData.append("userName", values.userName);
+      formData.append("bio", values.bio);
+      formData.append("header", values.header);
+      formData.append("socialLinks", JSON.stringify(values.socialLinks));
+
+      if (selectedFile) {
+        formData.append("profileImg", selectedFile);
+      }
+
+      const { data } = await axios.put(`/api/profile/${initialFormData.userId}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      onSave(data.profile);
+      message.success("Profile updated successfully!");
+    } catch (error) {
+      console.error("Profile update failed:", error);
+      message.error("Failed to update profile.");
+    }
+  };
+
+  return (
+    <Form
+      form={form}
+      layout="vertical"
+      initialValues={initialFormData}
+      onFinish={handleSubmit}
+    >
+      <Upload showUploadList={false} beforeUpload={() => false} onChange={handleImageUpload}>
+        <div style={{ position: "relative", display: "inline-block" }}>
+          <img
+            src={previewImage || "https://via.placeholder.com/150"}
+            alt="Profile Preview"
+            style={{
+              borderRadius: "50%",
+              width: "160px",
+              height: "160px",
+              objectFit: "cover",
+              border: "4px solid #d9d9d9",
+            }}
+          />
+          <Button
+            type="link"
+            icon={<PlusOutlined />}
+            style={{
+              position: "absolute",
+              bottom: "8px",
+              right: "8px",
+              backgroundColor: "#1890ff",
+              color: "#fff",
+              borderRadius: "50%",
+              padding: "8px",
+              fontSize: "16px",
+            }}
+          />
+        </div>
+      </Upload>
+
+      <Form.Item label="User Name" name="userName" rules={[{ required: true, message: "Enter a username" }]}>
+        <Input />
+      </Form.Item>
+
+      <Form.Item label="Bio" name="bio">
+        <Input.TextArea />
+      </Form.Item>
+
+      <Button type="primary" htmlType="submit">Save</Button>
+    </Form>
+  );
+};
+
+export default Edit;
+ */
