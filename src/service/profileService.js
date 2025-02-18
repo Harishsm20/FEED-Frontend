@@ -5,7 +5,9 @@ const API_URL = "http://localhost:5000/api/profile";
 
 export const fetchProfile = async () => {
   try {
-    const response = await axios.get(`${API_URL}/me`, { withCredentials: true });
+    const response = await axios.get(`${API_URL}/me`, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -27,11 +29,12 @@ export const checkUsernameAvailability = async (username) => {
 
 export const updateProfile = async (profileData) => {
   try {
-    const response = await axios.put(
-      `${API_URL}/me`,
-      profileData,
-      { withCredentials: true }
-    );
+    // console.log(profileData);
+    const response = await axios.put(`${API_URL}/me`, profileData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
