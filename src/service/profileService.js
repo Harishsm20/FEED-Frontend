@@ -29,7 +29,6 @@ export const checkUsernameAvailability = async (username) => {
 
 export const updateProfile = async (profileData) => {
   try {
-    // console.log(profileData);
     const response = await axios.put(`${API_URL}/me`, profileData, {
       withCredentials: true,
       headers: {

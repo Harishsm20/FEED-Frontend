@@ -6,6 +6,7 @@ import { fetchProfile } from "../service/profileService.js";
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [profileData, setProfileData] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -15,6 +16,8 @@ const Profile = () => {
         const data = await fetchProfile();
         setUserData(data.user);
         setProfileData(data.profile);
+        setProfileImage(data.imageUrl);
+
       } catch (err) {
         setError(err.message || "An error occurred");
       } finally {
@@ -37,7 +40,7 @@ const Profile = () => {
       {/* Left Section: Social Links */}
       <div className="lg:w-[30%] flex flex-col  p-4 bg-white rounded-lg shadow">
       <Bio
-          profileImg={login1}
+          profileImg={profileImage}
           header={profileData?.header || "Let's explore and create together!"}
           bioContent={profileData?.bio || "Welcome to my profile!"}
           initialFormData={{
