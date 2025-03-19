@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { login1 } from "../assets";
 import { Follow, SocialLinks, Bio } from "../components";
 import { fetchProfile } from "../service/profileService.js";
+import { userIcon } from "../assets";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -16,6 +17,7 @@ const Profile = () => {
         const data = await fetchProfile();
         setUserData(data.user);
         setProfileData(data.profile);
+        console.log("Data",data);
         setProfileImage(data.imageUrl);
 
       } catch (err) {

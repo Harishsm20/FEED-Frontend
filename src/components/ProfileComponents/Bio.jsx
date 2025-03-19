@@ -34,7 +34,8 @@ const Bio = ({ bioContent, header, profileImg, initialFormData, onSave }) => {
         <img
           src={profileImg}
           alt="Profile"
-          className="rounded-full w-40 h-40 border-4 border-[#f9f1cb] lg:hover:-translate-y-3 transition-transform duration-500 cursor-pointer"
+          className="rounded-full w-40 h-40 border-4 border-[#f9f1cb] lg:hover:-translate-y-3 transition-transform duration-500 cursor-pointer object-cover"
+          // className="rounded-full w-40 h-40 border-4 border-[#f9f1cb] lg:hover:-translate-y-3 transition-transform duration-500 cursor-pointer"
           onClick={handleEditToggle}
         />
         {isHovered && (
