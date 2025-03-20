@@ -17,8 +17,11 @@ const Profile = () => {
         const data = await fetchProfile();
         setUserData(data.user);
         setProfileData(data.profile);
-        console.log("Data",data);
-        setProfileImage(data.imageUrl);
+        if (data.imageUrl) {
+          setProfileImage(data.imageUrl);
+        } else {
+          setProfileImage(userIcon);
+        }
 
       } catch (err) {
         setError(err.message || "An error occurred");

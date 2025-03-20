@@ -10,3 +10,6 @@ export {default as Bio} from './ProfileComponents/Bio'
 export {default as Follow}  from './ProfileComponents/Follow'
 export {default as SocialLinks} from './ProfileComponents/SocialLinks'
 export {default as EditProfile} from './ProfileComponents/Edit'
+
+// Blog Post Design
+export {default as BlogItem} from './post/BlogItem'
