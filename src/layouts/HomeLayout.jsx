@@ -6,12 +6,15 @@ import { Footer, Header } from '../components'
 
 const HomeLayout = () => {
   return (
-    <>
+    <div className="relative">
       <Header />
-      <Outlet />
+      <div className="mt-2"> {/* Push content down to avoid overlap */}
+        <Outlet />
+      </div>
       {/* <Footer /> */}
-    </>
-  )
-}
+    </div>
+  );
+};
+
 
 export default HomeLayout

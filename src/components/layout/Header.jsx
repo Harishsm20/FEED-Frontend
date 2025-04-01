@@ -27,7 +27,7 @@ const Header = () => {
   };
 
   return (
-    <div className="sticky top-0 bg-white w-full h-16 mt-2 flex items-center px-5 shadow-xl justify-between">
+    <div className="sticky top-0 z-50 bg-white w-full h-16 mt-2 flex items-center px-5 shadow-xl justify-between">
       <div>Logo</div>
       <div className="flex justify-start px-5 py-2 items-center border border-gray-200 rounded-full shadow-lg w-1/4">
         <FaSearch />

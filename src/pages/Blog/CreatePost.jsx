@@ -1,130 +1,150 @@
-import React, { useState, useEffect } from 'react';
-import { createBlog, deleteBlog, getBlogsByTag } from '../../service/blogService';
+import React, { useState } from "react";
+import { Form, Input, Button, Upload, message, Row, Col } from "antd";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { createBlog } from "../../service/blogService";
 
-const Feed = () => {
-  const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState('');
-  const [newImage, setNewImage] = useState(null);
-  const [editIndex, setEditIndex] = useState(null);
-  const [editText, setEditText] = useState('');
-  const [editImage, setEditImage] = useState(null);
-  const [tag, setTag] = useState('');
+const { TextArea } = Input;
 
-  // Fetch posts by tag when the component mounts
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        if (tag) {
-          const fetchedPosts = await getBlogsByTag(tag);
-          setPosts(fetchedPosts);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    };
-    fetchPosts();
-  }, [tag]);
+const CreatePost = ({ onPostCreated }) => {
+  const [form] = Form.useForm();
+  const [previewImage, setPreviewImage] = useState(null);
+  const [fileList, setFileList] = useState([]);
 
-  // Function to handle adding a new post
-  const addPost = async () => {
-    if (newPost.trim() || newImage) {
-      try {
-        const blogData = {
-          title: 'New Blog Post', // You can replace this with a dynamic title
-          description: newPost,
-          headImage: newImage,
-          subImages: [],
-          tags: tag ? [tag] : []
-        };
-        const createdPost = await createBlog(blogData);
-        setPosts([...posts, createdPost]);
-        setNewPost('');
-        setNewImage(null);
-      } catch (error) {
-        console.error("Error creating post:", error);
-      }
+  /** Handle Image Upload */
+  const handleImageUpload = ({ file }) => {
+    const imageFile = file.originFileObj || file;
+    if (!imageFile || !(imageFile instanceof Blob)) {
+      message.error("Invalid file format.");
+      return;
     }
+
+    setFileList([imageFile]);
+
+    // Create preview image
+    const reader = new FileReader();
+    reader.onload = (e) => setPreviewImage(e.target.result);
+    reader.readAsDataURL(imageFile);
   };
 
-  // Function to handle deleting a post
-  const handleDeletePost = async (postId) => {
+  /** Handle Form Submission */
+  const handleSubmit = async (values) => {
     try {
-      await deleteBlog(postId);
-      setPosts(posts.filter(post => post._id !== postId));
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
-  };
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("tags", values.tags);
+      if (fileList.length > 0) {
+        formData.append("headImage", fileList[0]);
+      }
 
-  // Function to handle image upload
-  const handleImageUpload = (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const createdPost = await createBlog(formData);
+      message.success("Post created successfully!");
+      onPostCreated(createdPost);
+      form.resetFields();
+      setPreviewImage(null);
+      setFileList([]);
+    } catch (error) {
+      message.error("Failed to create post. Try again later.");
     }
   };
 
   return (
     <div>
-      <div className="max-w-lg mx-auto mt-10 p-6 bg-[#beb243] bg-opacity-90 rounded-2xl shadow-lg">
-        <h1 className="text-2xl text-white font-bold mb-4">CREATE FEED</h1>
-
-        {/* Select Tag */}
-        <input
-          type="text"
-          placeholder="Enter tag to filter posts..."
-          className="w-full p-2 mb-4 border rounded-xl"
-          value={tag}
-          onChange={(e) => setTag(e.target.value)}
-        />
-
-        {/* Add New Post */}
-        <div className="mb-4">
-          <textarea
-            className="w-full p-2 border rounded-xl"
-            placeholder="Add a new post..."
-            value={newPost}
-            onChange={(e) => setNewPost(e.target.value)}
-          />
-          <input type="file" onChange={handleImageUpload} />
-          <button
-            className="mt-2 px-4 py-2 bg-white text-[#beb243] rounded-2xl hover:bg-[#beb243] hover:text-white transition duration-500"
-            onClick={addPost}
-          >
-            Add Post
-          </button>
-        </div>
-
-        {/* Display Posts */}
-        <div>
-          {posts.map((post) => (
-            <div key={post._id} className="mb-4 p-4 border rounded">
-              <div>
-                <p className="border-4 p-1 text-[#f9f1cb] border-[#f9f1cb]">{post.description}</p>
-                {post.headImage && (
-                  <img
-                    src={post.headImage}
-                    alt="Post"
-                    className="mt-2 max-w-full h-auto rounded"
-                  />
-                )}
-                <button
-                  className="px-4 py-2 bg-red-500 bg-opacity-80 text-white rounded size-fit font-semibold text-sm"
-                  onClick={() => handleDeletePost(post._id)}
-                >
-                  Delete
-                </button>
-              </div>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        style={{
+          background: "#fff",
+          padding: "16px",
+          borderRadius: "8px",
+        }}
+      >
+        <Row gutter={[16, 16]}>
+          {/* Image Preview Box */}
+          <Col span={24} className="text-center">
+            <div
+              style={{
+                width: "400px",
+                height: "250px",
+                borderRadius: "8px",
+                border: "2px dashed #d9d9d9",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+                overflow: "hidden",
+                background: "#f5f5f5",
+              }}
+            >
+              {previewImage ? (
+                <img
+                  src={previewImage}
+                  alt="Post Preview"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <p style={{ color: "#999", fontSize: "16px", textAlign: "center" }}>
+                  Upload an image or <br /> Post your FEED
+                </p>
+              )}
             </div>
-          ))}
-        </div>
-      </div>
+          </Col>
+
+          {/* Image Upload Button */}
+          <Col span={24} className="text-center">
+            <Upload
+              showUploadList={false}
+              beforeUpload={() => false}
+              onChange={handleImageUpload}
+            >
+              <Button icon={<UploadOutlined />} type="dashed">
+                Upload Image
+              </Button>
+            </Upload>
+          </Col>
+
+          {/* Post Title */}
+          <Col span={24}>
+            <Form.Item
+              label="Title"
+              name="title"
+              rules={[{ required: true, message: "Please enter a title!" }]}
+            >
+              <Input placeholder="Enter post title" />
+            </Form.Item>
+          </Col>
+
+          {/* Post Description */}
+          <Col span={24}>
+            <Form.Item
+              label="Description"
+              name="description"
+              rules={[{ required: true, message: "Please enter a description!" }]}
+            >
+              <TextArea placeholder="Write something about your post..." rows={4} />
+            </Form.Item>
+          </Col>
+
+          {/* Tags */}
+          <Col span={24}>
+            <Form.Item label="Tags" name="tags">
+              <Input placeholder="Enter tags separated by commas" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* Submit Button */}
+        <Button type="primary" htmlType="submit" style={{ marginTop: "20px" }}>
+          Create Post
+        </Button>
+      </Form>
     </div>
   );
 };
 
-export default Feed;
+export default CreatePost;
