@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Form, Input, Button, Upload, message, Row, Col } from "antd";
-import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { Form, Input, Button, Upload, message, Row, Col, Modal } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import { createBlog } from "../../service/blogService";
 
 const { TextArea } = Input;
@@ -9,6 +9,7 @@ const CreatePost = ({ onPostCreated }) => {
   const [form] = Form.useForm();
   const [previewImage, setPreviewImage] = useState(null);
   const [fileList, setFileList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /** Handle Image Upload */
   const handleImageUpload = ({ file }) => {
@@ -49,18 +50,29 @@ const CreatePost = ({ onPostCreated }) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f8f9fa",
+      }}
+    >
       <Form
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
         style={{
           background: "#fff",
-          padding: "16px",
-          borderRadius: "8px",
+          padding: "20px",
+          borderRadius: "10px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          width: "500px",
         }}
       >
-        <Row gutter={[16, 16]}>
+        <Row gutter={[16, 16]} justify="center">
           {/* Image Preview Box */}
           <Col span={24} className="text-center">
             <div
@@ -75,7 +87,9 @@ const CreatePost = ({ onPostCreated }) => {
                 position: "relative",
                 overflow: "hidden",
                 background: "#f5f5f5",
+                cursor: previewImage ? "pointer" : "default",
               }}
+              onClick={() => previewImage && setIsModalOpen(true)}
             >
               {previewImage ? (
                 <img
@@ -139,10 +153,26 @@ const CreatePost = ({ onPostCreated }) => {
         </Row>
 
         {/* Submit Button */}
-        <Button type="primary" htmlType="submit" style={{ marginTop: "20px" }}>
+        <Button type="primary" htmlType="submit" style={{ marginTop: "20px", width: "100%" }}>
           Create Post
         </Button>
       </Form>
+
+      {/* Full-size Image Preview Modal */}
+      <Modal
+        visible={isModalOpen}
+        footer={null}
+        onCancel={() => setIsModalOpen(false)}
+        centered
+      >
+        {previewImage && (
+          <img
+            src={previewImage}
+            alt="Full Preview"
+            style={{ width: "100%", height: "auto" }}
+          />
+        )}
+      </Modal>
     </div>
   );
 };
