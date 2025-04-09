@@ -13,3 +13,4 @@ export {default as EditProfile} from './ProfileComponents/Edit'
 
 // Blog Post Design
 export {default as BlogItem} from './post/BlogItem'
+export {default as PostCard} from './post/PostCard'

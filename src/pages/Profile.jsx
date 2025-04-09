@@ -10,6 +10,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -22,6 +23,7 @@ const Profile = () => {
         } else {
           setProfileImage(userIcon);
         }
+        setPosts(data.posts || []);
 
       } catch (err) {
         setError(err.message || "An error occurred");
@@ -72,10 +74,12 @@ const Profile = () => {
       {/* Right Section: Bio */}
       <div className="mt-6 lg:mt-0 lg:w-[60%] bg-white rounded-lg shadow p-4 lg:ml-6">
       <Follow
-          postCount={profileData?.posts || 0}
-          followers={profileData?.followers || 0}
-          following={profileData?.following || 0}
-        />
+        postCount={posts.length}
+        followers={profileData?.followers || 0}
+        following={profileData?.following || 0}
+        posts={posts}
+      />
+
       </div>
     </div>
   );

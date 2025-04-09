@@ -33,7 +33,15 @@ const CreatePost = ({ onPostCreated }) => {
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("description", values.description);
-      formData.append("tags", values.tags);
+
+      const rawTags = values.tags || "";
+      const tagsArray = rawTags
+        .split(/[\s,]+/)        // split by space or comma
+        .filter(Boolean)        // remove empty strings
+        .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)); 
+      
+        formData.append("tags", JSON.stringify(tagsArray));
+
       if (fileList.length > 0) {
         formData.append("headImage", fileList[0]);
       }

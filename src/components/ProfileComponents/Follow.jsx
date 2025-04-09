@@ -1,43 +1,40 @@
-import React from 'react'
+// components/Follow.jsx
+import React from 'react';
+import PostCard from '../post/PostCard'; // make sure the path is correct
 
-const Follow = ({postCount,followers, following}) => {
+const Follow = ({ postCount, followers, following, posts }) => {
+  console.log(posts)
   return (
     <>
-    {/*Followers and Following contents */}
-    <div className='grid grid-cols-3 justify-items-center text-center p-2 mb-5 border-4 border-[#f0e6df]'>
-        <div className=''>
+      {/* Followers / Following counts */}
+      <div className='grid grid-cols-3 justify-items-center text-center p-2 mb-5 border-4 border-[#f0e6df]'>
         <div>
-            {postCount}
+          <div>{postCount}</div>
+          <div>Posts</div>
         </div>
-        
         <div>
-            Posts
+          <div>{followers}</div>
+          <div>Followers</div>
         </div>
+        <div>
+          <div>{following}</div>
+          <div>Following</div>
         </div>
+      </div>
 
-        <div className=''>
-        <div>
-            {followers}
-        </div>
-
-        <div>
-            Followers
-        </div>
-        </div>
-
-        <div className=''>
-        <div>
-            {following}
-        </div>
-
-        <div>
-            Following
-        </div>
-        </div>
-    </div>
-      
+      {/* Post Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        {posts.map((post) => (
+          <PostCard
+            key={post._id}
+            headImg={post.headImageUrl}
+            title={post.title}
+            description={post.description}
+          />
+        ))}
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Follow
+export default Follow;

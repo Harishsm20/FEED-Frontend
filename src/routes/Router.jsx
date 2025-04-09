@@ -4,6 +4,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from "react-rout
 // Import Pages
 import { HomeLayout } from "../layouts";
 import { BlogPost, CreatePost, HomePage, Login, Profile, Signup } from "../pages";
+import { PostCard } from "../components";
 
 const Router = createBrowserRouter(
     createRoutesFromElements(
@@ -18,6 +19,7 @@ const Router = createBrowserRouter(
         <Route path="/profile" element={<Profile />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/post" element={<BlogPost />} />
+        <Route path="/postCard" element={<PostCard />} />
 
       </Route>
       </>
