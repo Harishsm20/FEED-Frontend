@@ -1,6 +1,7 @@
 // components/Follow.jsx
 import React from 'react';
-import PostCard from '../post/PostCard'; // make sure the path is correct
+import PostCard from '../post/PostCard'; 
+import { BlogPost } from '../../pages';
 
 const Follow = ({ postCount, followers, following, posts }) => {
   console.log(posts)
@@ -33,6 +34,16 @@ const Follow = ({ postCount, followers, following, posts }) => {
           />
         ))}
       </div>
+
+      {/* BlogPost Modal
+      {selectedPost && (
+        <BlogPost
+          title={selectedPost.title}
+          description={selectedPost.description}
+          headImg={selectedPost.headImageUrl}
+          onClose={() => setSelectedPost(null)}
+        />
+      )} */}
     </>
   );
 };
