@@ -1,8 +1,15 @@
 // components/BlogPost.jsx
-import React from "react";
+import React,{useEffect, useState} from "react";
 import { motion } from "framer-motion";
 
-const BlogPost = ({ title, description, headImg, onClose }) => {
+const BlogPost = ({ postId }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [headImg, setHeadImg] = useState("");
+  // const [subImages, setSubImages] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   return (
     <motion.div
       className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
