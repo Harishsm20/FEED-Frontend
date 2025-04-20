@@ -10,6 +10,28 @@ const BlogPost = ({ postId }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const loadPost = async () => {
+      try {
+        const data = await fetchPostById(postId); // <-- make sure this function works
+        setTitle(data.title);
+        setDescription(data.description);
+        setHeadImg(data.headImg);
+        // setSubImages(data.subImages || []);
+      } catch (err) {
+        setError(err.message || "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (postId) loadPost();
+  }, [postId]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
+
   return (
     <motion.div
       className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
