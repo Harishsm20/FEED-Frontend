@@ -9,9 +9,10 @@ const CreatePost = ({ onPostCreated }) => {
   const [form] = Form.useForm();
   const [previewImage, setPreviewImage] = useState(null);
   const [fileList, setFileList] = useState([]);
+  const [subImages, setSubImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  /** Handle Image Upload */
+  /** Handle Head Image Upload */
   const handleImageUpload = ({ file }) => {
     const imageFile = file.originFileObj || file;
     if (!imageFile || !(imageFile instanceof Blob)) {
@@ -21,13 +22,23 @@ const CreatePost = ({ onPostCreated }) => {
 
     setFileList([imageFile]);
 
-    // Create preview image
     const reader = new FileReader();
     reader.onload = (e) => setPreviewImage(e.target.result);
     reader.readAsDataURL(imageFile);
   };
 
-  /** Handle Form Submission */
+  /** Handle Sub Image Uploads */
+  const handleSubImageUpload = ({ fileList }) => {
+    if (fileList.length > 3) {
+      message.error("You can only upload up to 3 sub-images.");
+      return;
+    }
+
+    const files = fileList.map((f) => f.originFileObj || f);
+    setSubImages(files);
+  };
+
+  /** Submit Form */
   const handleSubmit = async (values) => {
     try {
       const formData = new FormData();
@@ -36,15 +47,18 @@ const CreatePost = ({ onPostCreated }) => {
 
       const rawTags = values.tags || "";
       const tagsArray = rawTags
-        .split(/[\s,]+/)        // split by space or comma
-        .filter(Boolean)        // remove empty strings
-        .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)); 
-      
-        formData.append("tags", JSON.stringify(tagsArray));
+        .split(/[\s,]+/)
+        .filter(Boolean)
+        .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`));
+      formData.append("tags", JSON.stringify(tagsArray));
 
       if (fileList.length > 0) {
         formData.append("headImage", fileList[0]);
       }
+
+      subImages.forEach((image) => {
+        formData.append("subImages", image);
+      });
 
       const createdPost = await createBlog(formData);
       message.success("Post created successfully!");
@@ -52,6 +66,7 @@ const CreatePost = ({ onPostCreated }) => {
       form.resetFields();
       setPreviewImage(null);
       setFileList([]);
+      setSubImages([]);
     } catch (error) {
       message.error("Failed to create post. Try again later.");
     }
@@ -117,7 +132,7 @@ const CreatePost = ({ onPostCreated }) => {
             </div>
           </Col>
 
-          {/* Image Upload Button */}
+          {/* Head Image Upload Button */}
           <Col span={24} className="text-center">
             <Upload
               showUploadList={false}
@@ -125,10 +140,46 @@ const CreatePost = ({ onPostCreated }) => {
               onChange={handleImageUpload}
             >
               <Button icon={<UploadOutlined />} type="dashed">
-                Upload Image
+                Upload Head Image
               </Button>
             </Upload>
           </Col>
+
+          {/* Sub Images Upload */}
+          <Col span={24} className="text-center">
+            <Upload
+              multiple
+              beforeUpload={() => false}
+              onChange={handleSubImageUpload}
+              listType="picture"
+            >
+              <Button icon={<UploadOutlined />} type="dashed">
+                Upload Sub Images (max 3)
+              </Button>
+            </Upload>
+          </Col>
+
+          {/* Sub Image Preview Thumbnails */}
+          {subImages.length > 0 && (
+            <Col span={24}>
+              <Row gutter={[8, 8]}>
+                {subImages.map((img, index) => (
+                  <Col span={8} key={index}>
+                    <img
+                      src={URL.createObjectURL(img)}
+                      alt={`sub-${index}`}
+                      style={{
+                        width: "100%",
+                        height: 100,
+                        objectFit: "cover",
+                        borderRadius: 6,
+                      }}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+          )}
 
           {/* Post Title */}
           <Col span={24}>
@@ -155,7 +206,7 @@ const CreatePost = ({ onPostCreated }) => {
           {/* Tags */}
           <Col span={24}>
             <Form.Item label="Tags" name="tags">
-              <Input placeholder="Enter tags separated by commas" />
+              <Input placeholder="Enter tags separated by commas or spaces" />
             </Form.Item>
           </Col>
         </Row>
@@ -168,7 +219,7 @@ const CreatePost = ({ onPostCreated }) => {
 
       {/* Full-size Image Preview Modal */}
       <Modal
-        visible={isModalOpen}
+        open={isModalOpen}
         footer={null}
         onCancel={() => setIsModalOpen(false)}
         centered
