@@ -138,6 +138,20 @@ const CreatePost = ({ onPostCreated }) => {
               showUploadList={false}
               beforeUpload={() => false}
               onChange={handleImageUpload}
+              listType="picture"
+              maxCount={3}
+              fileList={subImages.map((file, index) => ({
+                uid: index.toString(),
+                name: file.name || `sub-image-${index + 1}`,
+                status: "done",
+                url: URL.createObjectURL(file),
+              }))}
+              onRemove={(file) => {
+                const updatedList = subImages.filter(
+                  (img) => img.name !== file.name && URL.createObjectURL(img) !== file.url
+                );
+                setSubImages(updatedList);
+              }}
             >
               <Button icon={<UploadOutlined />} type="dashed">
                 Upload Head Image
