@@ -14,6 +14,7 @@ const PostCard = ({ headImg, title, description }) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
+        className="transition-transform duration-300 hover:translate-y-1 hover:border-r-8 border-r-8"
         component="img"
         alt={title}
         height="140"
